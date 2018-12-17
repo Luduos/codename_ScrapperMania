@@ -6,11 +6,14 @@ using UnityEngine;
 public class BasicMovement : MonoBehaviour
 {
     [SerializeField]
-    private float runSpeed = 0;
+    Camera playerCam = null;
+    [SerializeField]
+    private MouseLookSimple mouseLook;
 
     [SerializeField]
+    private float runSpeed = 0;
+    [SerializeField]
     private float walkSpeed = 0;
-
     [SerializeField]
     private float jumpStrength = 0;
 
@@ -22,7 +25,7 @@ public class BasicMovement : MonoBehaviour
     private bool pressedJump = false;
     
     // Start is called before the first frame update
-    void Awake()
+    void Start()
     {
         player = this.GetComponent<Rigidbody>();
         playerCollider = this.GetComponent<CapsuleCollider>();
@@ -32,12 +35,18 @@ public class BasicMovement : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        rotateView();
         movementHandler();
         jumpHandler();
         if (Input.GetButton("Walk"))
             isWalking = true;
         else
             isWalking = false;
+    }
+
+    private void rotateView()
+    {
+        mouseLook.MouseLookRotation();
     }
 
     private void movementHandler()
@@ -48,12 +57,9 @@ public class BasicMovement : MonoBehaviour
         if(hAxis != 0 || vAxis != 0)
         {
             checkMovementMode();
-            Vector3 movement = new Vector3(hAxis * movementSpeed * Time.deltaTime, 0.0f, vAxis * movementSpeed * Time.deltaTime);
+            Vector3 movement = playerCam.transform.forward * vAxis * movementSpeed * Time.deltaTime + playerCam.transform.right * hAxis * movementSpeed * Time.deltaTime;
             Vector3 newPos = transform.position + movement;
             player.MovePosition(newPos);
-
-            Vector3 moveDirection = new Vector3(hAxis, 0, vAxis);
-            player.rotation = Quaternion.LookRotation(moveDirection);
         }
     }
 
