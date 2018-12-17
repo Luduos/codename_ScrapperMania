@@ -5279,7 +5279,7 @@ GameObject:
   - component: {fileID: 1252142338}
   - component: {fileID: 1252142337}
   m_Layer: 0
-  m_Name: Main Camera
+  m_Name: PlayerCam
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5362,6 +5362,7 @@ GameObject:
   - component: {fileID: 1257798832}
   - component: {fileID: 1257798831}
   - component: {fileID: 1257798835}
+  - component: {fileID: 1257798836}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -5376,7 +5377,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1257798830}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: adb1dfe708fc1ab499721d3d8d3d667d, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.5
@@ -5457,8 +5458,24 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &1257798836
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1257798830}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4634c781f16a16e48b72170653cdb81d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerCam: {fileID: 0}
+  runSpeed: 5
+  walkSpeed: 2
+  jumpStrength: 5
 --- !u!1 &1383952970
 GameObject:
   m_ObjectHideFlags: 0
