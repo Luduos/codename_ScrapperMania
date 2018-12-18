@@ -8,7 +8,7 @@ public class BasicMovement : MonoBehaviour
     [SerializeField]
     Camera playerCam = null;
     [SerializeField]
-    private MouseLookSimple mouseLook;
+    private MouseLookSimple mouseLook = null;
 
     [SerializeField]
     private float runSpeed = 0;
@@ -95,7 +95,7 @@ public class BasicMovement : MonoBehaviour
         Vector3 corner2 = transform.position + new Vector3(-playerSize.x / 2, -playerSize.y / 2 + 0.01f, playerSize.z / 2);
         Vector3 corner3 = transform.position + new Vector3(playerSize.x / 2, -playerSize.y / 2 + 0.01f, -playerSize.z / 2);
         Vector3 corner4 = transform.position + new Vector3(-playerSize.x / 2, -playerSize.y / 2 + 0.01f, -playerSize.z / 2);
-        Vector3 middle = transform.position;
+        Vector3 middle = transform.position + new Vector3(0, -playerSize.y / 2 + 0.01f, 0);
 
         bool grounded1 = Physics.Raycast(corner1, -Vector3.up, 0.02f);
         bool grounded2 = Physics.Raycast(corner2, -Vector3.up, 0.02f);

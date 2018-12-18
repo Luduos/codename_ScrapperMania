@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7577751236386341009}
   - component: {fileID: 7577751236386341008}
   - component: {fileID: 7577751236386341011}
+  - component: {fileID: 4351056786630285323}
   m_Layer: 0
   m_Name: PlayerCam
   m_TagString: MainCamera
@@ -82,6 +83,20 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7577751236386341010}
   m_Enabled: 1
+--- !u!114 &4351056786630285323
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7577751236386341010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7290bcab1a79b04fa0f2dd8c90a34f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mouseSensitivity: 200
+  clampAngle: 80
 --- !u!1 &7577751236390129980
 GameObject:
   m_ObjectHideFlags: 0
@@ -96,7 +111,6 @@ GameObject:
   - component: {fileID: 7577751236390129981}
   - component: {fileID: 7577751236390129953}
   - component: {fileID: 7577751236390129958}
-  - component: {fileID: 7577751236390129959}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -207,21 +221,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerCam: {fileID: 7577751236386341008}
-  mouseLook: {fileID: 7577751236390129959}
-  runSpeed: 5
-  walkSpeed: 2
-  jumpStrength: 5
---- !u!114 &7577751236390129959
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7577751236390129980}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b7290bcab1a79b04fa0f2dd8c90a34f0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mouseSensitivity: 100
-  clampAngle: 80
+  mouseLook: {fileID: 4351056786630285323}
+  runSpeed: 8
+  walkSpeed: 3
+  jumpStrength: 8
