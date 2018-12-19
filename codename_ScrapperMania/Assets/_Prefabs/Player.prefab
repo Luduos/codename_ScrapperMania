@@ -97,6 +97,7 @@ GameObject:
   - component: {fileID: 7577751236390129953}
   - component: {fileID: 7577751236390129958}
   - component: {fileID: 7577751236390129959}
+  - component: {fileID: 7289298857483265246}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -225,3 +226,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mouseSensitivity: 100
   clampAngle: 80
+--- !u!114 &7289298857483265246
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7577751236390129980}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b0ca3616de3e7a4eb067f45a22785b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hook: {fileID: 0}
+  hookHolder: {fileID: 0}
+  hookTravelSpeed: 0
+  playerTravelSpeed: 0
+  maxDistance: 0
+  currentDistance: 0
