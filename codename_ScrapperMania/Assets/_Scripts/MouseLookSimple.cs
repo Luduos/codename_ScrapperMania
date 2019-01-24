@@ -13,8 +13,13 @@ public class MouseLookSimple : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.Locked;
         Vector3 rot = transform.localRotation.eulerAngles;
-        rotY = rot.y;
         rotX = rot.x;
+        rotY = rot.y;
+    }
+
+    private void FixedUpdate()
+    {
+        MouseLookRotation();
     }
 
     public void MouseLookRotation()
@@ -22,12 +27,12 @@ public class MouseLookSimple : MonoBehaviour
         float mouseX = Input.GetAxis("Mouse X");
         float mouseY = -Input.GetAxis("Mouse Y");
 
-        rotY += mouseX * mouseSensitivity * Time.deltaTime;
-        rotX += mouseY * mouseSensitivity * Time.deltaTime;
+        rotX += mouseX * mouseSensitivity * Time.deltaTime;
+        rotY += mouseY * mouseSensitivity * Time.deltaTime;
 
-        rotX = Mathf.Clamp(rotX, -clampAngle, clampAngle);
+        rotY = Mathf.Clamp(rotY, -clampAngle, clampAngle);
 
-        Quaternion localRotation = Quaternion.Euler(rotX, rotY, 0.0f);
+        Quaternion localRotation = Quaternion.Euler(rotY, rotX, 0.0f);
         transform.rotation = localRotation;
     }
 }

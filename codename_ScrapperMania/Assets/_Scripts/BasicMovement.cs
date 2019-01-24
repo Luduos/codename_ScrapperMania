@@ -3,12 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(CharacterController))]
 public class BasicMovement : MonoBehaviour
 {
     [SerializeField]
     Camera playerCam = null;
-    [SerializeField]
-    private MouseLookSimple mouseLook = null;
 
     [SerializeField]
     private float runSpeed = 0;
@@ -16,93 +15,58 @@ public class BasicMovement : MonoBehaviour
     private float walkSpeed = 0;
     [SerializeField]
     private float jumpStrength = 0;
+    [SerializeField]
+    private Vector3 gravity = new Vector3(0f, -9.81f, 0f);
 
-    private Rigidbody player = null;
-    private CapsuleCollider playerCollider = null;
-    private Vector3 playerSize = Vector3.zero;
-    private float movementSpeed = 0.0f;
-    private bool isWalking = false;
-    private bool pressedJump = false;
+    private CharacterController controller = null;
+
+    private float currentSpeed = 0.0f;
+    private Vector3 velocity = Vector3.zero;
     
-    // Start is called before the first frame update
     void Start()
     {
-        player = this.GetComponent<Rigidbody>();
-        playerCollider = this.GetComponent<CapsuleCollider>();
-        playerSize = playerCollider.bounds.size;
+        controller = GetComponent<CharacterController>();
     }
 
-    // Update is called once per frame
     void FixedUpdate()
     {
-        rotateView();
-        movementHandler();
-        jumpHandler();
+        UpdateMovementSpeed();
+        // ApplyGravity();
+        GroundMovement();
+        CheckJump();
+    }
+
+    private void UpdateMovementSpeed()
+    {
         if (Input.GetButton("Walk"))
-            isWalking = true;
+            currentSpeed = walkSpeed;
         else
-            isWalking = false;
+            currentSpeed = runSpeed;
     }
 
-    private void rotateView()
+    private void ApplyGravity()
     {
-        mouseLook.MouseLookRotation();
+        if(!controller.isGrounded)
+            controller.Move(gravity * Time.deltaTime);
     }
 
-    private void movementHandler()
+    private void GroundMovement()
     {
-        float hAxis = Input.GetAxis("Horizontal");
-        float vAxis = Input.GetAxis("Vertical");
+        float horizontalAxis = Input.GetAxis("Horizontal");
+        float verticalAxis = Input.GetAxis("Vertical");
 
-        if(hAxis != 0 || vAxis != 0)
+        // projects camera forward vector onto x and z plane
+        Vector3 projectedForward = new Vector3(playerCam.transform.forward.x, 0f, playerCam.transform.forward.z); 
+        Vector3 groundMovement = projectedForward * verticalAxis + playerCam.transform.right * horizontalAxis;
+        groundMovement.Normalize();
+        controller.Move(groundMovement * currentSpeed * Time.deltaTime);
+    } 
+
+    private void CheckJump()
+    {
+        if(Input.GetButton("Jump") && controller.isGrounded)
         {
-            checkMovementMode();
-            Vector3 movement = playerCam.transform.forward * vAxis * movementSpeed * Time.deltaTime + playerCam.transform.right * hAxis * movementSpeed * Time.deltaTime;
-            Vector3 newPos = transform.position + movement;
-            player.MovePosition(newPos);
+            controller.Move(Vector3.up * jumpStrength * Time.deltaTime);
         }
-    }
-
-    private void checkMovementMode()
-    {
-        if (isWalking)
-            movementSpeed = walkSpeed;
-        else
-            movementSpeed = runSpeed;
-    }
-
-    private void jumpHandler()
-    {
-        float jAxis = Input.GetAxis("Jump");
-
-        if (jAxis > 0)
-        {
-            bool isGrounded = checkGrounded();
-            if(!pressedJump && isGrounded)
-            {
-                pressedJump = true;
-                Vector3 jumpVector = new Vector3(0.0f, jAxis * jumpStrength, 0.0f);
-                player.AddForce(jumpVector, ForceMode.VelocityChange);
-            }
-        }
-        else
-            pressedJump = false;
-    }
-
-    private bool checkGrounded()
-    {
-        Vector3 corner1 = transform.position + new Vector3(playerSize.x / 2, -playerSize.y / 2 + 0.01f, playerSize.z / 2);
-        Vector3 corner2 = transform.position + new Vector3(-playerSize.x / 2, -playerSize.y / 2 + 0.01f, playerSize.z / 2);
-        Vector3 corner3 = transform.position + new Vector3(playerSize.x / 2, -playerSize.y / 2 + 0.01f, -playerSize.z / 2);
-        Vector3 corner4 = transform.position + new Vector3(-playerSize.x / 2, -playerSize.y / 2 + 0.01f, -playerSize.z / 2);
-        Vector3 middle = transform.position + new Vector3(0, -playerSize.y / 2 + 0.01f, 0);
-
-        bool grounded1 = Physics.Raycast(corner1, -Vector3.up, 0.02f);
-        bool grounded2 = Physics.Raycast(corner2, -Vector3.up, 0.02f);
-        bool grounded3 = Physics.Raycast(corner3, -Vector3.up, 0.02f);
-        bool grounded4 = Physics.Raycast(corner4, -Vector3.up, 0.02f);
-        bool grounded5 = Physics.Raycast(middle, -Vector3.up, 0.02f);
-
-        return (grounded1 || grounded2 || grounded3 || grounded4 || grounded5);
     }
 }
