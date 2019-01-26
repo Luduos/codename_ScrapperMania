@@ -4621,36 +4621,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7577751236390129958, guid: ec957fe6cdb593a4f9e173a9d761700c,
-        type: 3}
-      propertyPath: timeForJump
-      value: 0.25
-      objectReference: {fileID: 0}
-    - target: {fileID: 7577751236390129958, guid: ec957fe6cdb593a4f9e173a9d761700c,
-        type: 3}
-      propertyPath: jumpGravityMultiplier
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 7577751236390129958, guid: ec957fe6cdb593a4f9e173a9d761700c,
-        type: 3}
-      propertyPath: jumpStrength
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 7577751236390129958, guid: ec957fe6cdb593a4f9e173a9d761700c,
-        type: 3}
-      propertyPath: stickToGroundForce
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 7577751236390129958, guid: ec957fe6cdb593a4f9e173a9d761700c,
-        type: 3}
-      propertyPath: fallGravityMultiplier
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4314861131267928128, guid: ec957fe6cdb593a4f9e173a9d761700c,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ec957fe6cdb593a4f9e173a9d761700c, type: 3}
 --- !u!1 &542841120

@@ -146,10 +146,11 @@ MonoBehaviour:
   playerCam: {fileID: 7577751236386341008}
   runSpeed: 10
   walkSpeed: 5
-  jumpStrength: 5
-  stickToGroundForce: 1
-  jumpGravityMultiplier: 1
-  fallGravityMultiplier: 1
+  jumpStrength: 10
+  stickToGroundForce: 5
+  jumpGravityMultiplier: 3
+  fallGravityMultiplier: 2
+  timeForJump: 0.25
 --- !u!143 &4314861131267928128
 CharacterController:
   m_ObjectHideFlags: 0
