@@ -42,6 +42,11 @@ public class Hook : MonoBehaviour
         
     }
 
+    private void Update()
+    {
+        
+    }
+
     // Update is called once per frame
     void FixedUpdate()
     {
@@ -90,7 +95,7 @@ public class Hook : MonoBehaviour
             Vector3 hookMovement = hookToHit.normalized * hookStrength;
             controller.Move(hookMovement * Time.fixedDeltaTime);
 
-            visualizer.ShowHookUpdate();
+            visualizer.ShowHookUpdate(hookOrigin.transform.position, hit.point);
         }
     }
 
