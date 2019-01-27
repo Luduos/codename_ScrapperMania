@@ -7,10 +7,12 @@ using UnityStandardAssets.CrossPlatformInput;
 [RequireComponent(typeof(CharacterController), typeof(Rigidbody))]
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField]
-    Camera playerCam = null;
+    public bool UseGravity { get; set; }
 
-    [Header("Ground Movement Variables")]
+    [SerializeField]
+    private Camera playerCam = null;
+
+    [Header("Vertical Movement Variables")]
     [SerializeField]
     private float runSpeed = 0;
     [SerializeField]
@@ -55,6 +57,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void Awake()
     {
+        UseGravity = true;
+
         controller = GetComponent<CharacterController>();
         rigidBody = GetComponent<Rigidbody>();
     }
@@ -67,8 +71,9 @@ public class PlayerMovement : MonoBehaviour
     void FixedUpdate()
     {
         UpdateMovementSpeed();
-        ApplyGravity();
-        GroundMovement();
+        if(UseGravity)
+            ApplyGravity();
+        VerticalMovement();
         Jump();
 
         controller.Move(movementDirection * Time.fixedDeltaTime);
@@ -97,17 +102,25 @@ public class PlayerMovement : MonoBehaviour
             movementDirection.y = -stickToGroundForce * Time.fixedDeltaTime;
     }
 
-    private void GroundMovement()
+    private void VerticalMovement()
     {
         float horizontalAxis = CrossPlatformInputManager.GetAxisRaw("Horizontal");
         float verticalAxis = CrossPlatformInputManager.GetAxisRaw("Vertical");
 
         // projects camera forward vector onto x and z plane       
         Vector3 projectedForward = Vector3.ProjectOnPlane(playerCam.transform.forward, Vector3.up);
-        Vector3 groundMovement = projectedForward * verticalAxis + playerCam.transform.right * horizontalAxis;
-        groundMovement.Normalize();
-        movementDirection.x = groundMovement.x * currentSpeed;
-        movementDirection.z = groundMovement.z * currentSpeed;
+        Vector3 verticalMovement = projectedForward * verticalAxis + playerCam.transform.right * horizontalAxis;
+        verticalMovement.Normalize();
+        movementDirection.x = verticalMovement.x * currentSpeed;
+        movementDirection.z = verticalMovement.z * currentSpeed;
+
+        // keep speed in air
+        if (!controller.isGrounded)
+        {
+            movementDirection.x += controller.velocity.x;
+            movementDirection.z += controller.velocity.z;
+
+        }
     }
 
     private void Jump()
