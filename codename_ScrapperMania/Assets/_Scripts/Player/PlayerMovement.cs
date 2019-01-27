@@ -19,18 +19,25 @@ public class PlayerMovement : MonoBehaviour
     [Header("Jump Feeling Adjustment")]
     [SerializeField]
     private float jumpStrength = 0;
+
     [SerializeField]
-    [Header("How \"difficult\" is it to get off the ground?")]
+    [Tooltip("How \"difficult\" is it to get off the ground?")]
     private float stickToGroundForce = 1f;
+
     [SerializeField]
     [Tooltip("Multiplier while jumping up.")]
     private float jumpGravityMultiplier = 1.0f;
+
     [SerializeField]
     [Tooltip("Multiplier while falling down.")]
     private float fallGravityMultiplier = 0.8f;
+
     [SerializeField]
     [Tooltip("Seconds after falling during which we can still jump.")]
     private float timeForJump = 0.5f;
+
+    [SerializeField]
+    private MovementButtonInfo movementInfo = new MovementButtonInfo();
 
     private CharacterController controller = null;
     private Rigidbody rigidBody = null;
