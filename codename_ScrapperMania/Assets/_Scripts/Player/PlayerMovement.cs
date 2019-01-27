@@ -7,14 +7,18 @@ using UnityStandardAssets.CrossPlatformInput;
 [RequireComponent(typeof(CharacterController), typeof(Rigidbody))]
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField]
-    Camera playerCam = null;
+    public bool UseGravity { get; set; }
 
-    [Header("Ground Movement Variables")]
+    [SerializeField]
+    private Camera playerCam = null;
+
+    [Header("Vertical Movement Variables")]
     [SerializeField]
     private float runSpeed = 0;
     [SerializeField]
     private float walkSpeed = 0;
+    [SerializeField]
+    private float airMovementMultiplier = 0.8f;
 
     [Header("Jump Feeling Adjustment")]
     [SerializeField]
@@ -50,11 +54,19 @@ public class PlayerMovement : MonoBehaviour
     /// How long has the player been in the air?
     /// </summary>
     private float inAirTimer = 0f;
+    /// <summary>
+    /// How fast is the player when leaving the ground? 
+    /// This is used to keep him flying into a certain direction, 
+    /// </summary>
+    private Vector2 airStartVelocity = Vector2.zero;
+
     private float currentSpeed = 0.0f;
-    private Vector3 movementDirection = Vector3.zero;
+    private Vector3 currentMovement = Vector3.zero;
 
     private void Awake()
     {
+        UseGravity = true;
+
         controller = GetComponent<CharacterController>();
         rigidBody = GetComponent<Rigidbody>();
     }
@@ -67,11 +79,12 @@ public class PlayerMovement : MonoBehaviour
     void FixedUpdate()
     {
         UpdateMovementSpeed();
-        ApplyGravity();
-        GroundMovement();
+        if(UseGravity)
+            ApplyGravity();
+        VerticalMovement();
         Jump();
 
-        controller.Move(movementDirection * Time.fixedDeltaTime);
+        controller.Move(currentMovement * Time.fixedDeltaTime);
     }
 
     private void UpdateMovementSpeed()
@@ -80,6 +93,9 @@ public class PlayerMovement : MonoBehaviour
             currentSpeed = walkSpeed;
         else
             currentSpeed = runSpeed;
+
+        if (!controller.isGrounded)
+            currentSpeed *= airMovementMultiplier;
     }
 
     private void ApplyGravity()
@@ -89,25 +105,37 @@ public class PlayerMovement : MonoBehaviour
             Vector3 gravityVector = Physics.gravity * Time.fixedDeltaTime;
             // we are currently going down = falling
             if (Vector3.Dot(controller.velocity, Physics.gravity) > 0)
-                movementDirection += gravityVector * fallGravityMultiplier;
+                currentMovement += gravityVector * fallGravityMultiplier;
             else
-                movementDirection += gravityVector * jumpGravityMultiplier;
+                currentMovement += gravityVector * jumpGravityMultiplier;
         }
         else
-            movementDirection.y = -stickToGroundForce * Time.fixedDeltaTime;
+            currentMovement.y = -stickToGroundForce * Time.fixedDeltaTime;
     }
 
-    private void GroundMovement()
+    private void VerticalMovement()
     {
         float horizontalAxis = CrossPlatformInputManager.GetAxisRaw("Horizontal");
         float verticalAxis = CrossPlatformInputManager.GetAxisRaw("Vertical");
 
         // projects camera forward vector onto x and z plane       
         Vector3 projectedForward = Vector3.ProjectOnPlane(playerCam.transform.forward, Vector3.up);
-        Vector3 groundMovement = projectedForward * verticalAxis + playerCam.transform.right * horizontalAxis;
-        groundMovement.Normalize();
-        movementDirection.x = groundMovement.x * currentSpeed;
-        movementDirection.z = groundMovement.z * currentSpeed;
+        Vector3 verticalMovement = projectedForward * verticalAxis + playerCam.transform.right * horizontalAxis;
+        verticalMovement.Normalize();
+
+        
+
+        // keep speed in air
+        if (!controller.isGrounded)
+        {
+            currentMovement.x += verticalMovement.x * currentSpeed;
+            currentMovement.z += verticalMovement.z * currentSpeed;
+        }
+        else
+        {
+            currentMovement.x = verticalMovement.x * currentSpeed;
+            currentMovement.z = verticalMovement.z * currentSpeed;
+        }
     }
 
     private void Jump()
@@ -126,7 +154,8 @@ public class PlayerMovement : MonoBehaviour
         bool canJump = inAirTimer < timeForJump && !performedJump;
         if (CrossPlatformInputManager.GetButton("Jump") && canJump)
         {
-            movementDirection += Vector3.up * jumpStrength;
+            currentMovement += Vector3.up * jumpStrength;
+            airStartVelocity.Set(controller.velocity.x, controller.velocity.z);
             performedJump = true;
         }
     }
