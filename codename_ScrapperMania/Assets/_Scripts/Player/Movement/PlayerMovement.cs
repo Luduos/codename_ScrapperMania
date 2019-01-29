@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
 
-[RequireComponent(typeof(CharacterController), typeof(Rigidbody))]
+[RequireComponent(typeof(Collider), typeof(Rigidbody))]
 public class PlayerMovement : MonoBehaviour
 {
     public bool UseGravity { get; set; }
@@ -40,10 +40,11 @@ public class PlayerMovement : MonoBehaviour
     [Tooltip("Seconds after falling during which we can still jump.")]
     private float timeForJump = 0.5f;
 
+    [Header("Buttons")]
     [SerializeField]
-    private MovementButtonInfo movementInfo = new MovementButtonInfo();
+    private PlayerButtons playerButtons = null;
 
-    private CharacterController controller = null;
+    private Collider playerCollider = null;
     private Rigidbody rigidBody = null;
 
     /// <summary>
@@ -115,7 +116,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void VerticalMovement()
     {
-        float horizontalAxis = CrossPlatformInputManager.GetAxisRaw("Horizontal");
+        float horizontalAxis = CrossPlatformInputManager.GetAxisRaw(playerButtons.horizontalAxisName);
         float verticalAxis = CrossPlatformInputManager.GetAxisRaw("Vertical");
 
         // projects camera forward vector onto x and z plane       
@@ -126,12 +127,7 @@ public class PlayerMovement : MonoBehaviour
         
 
         // keep speed in air
-        if (!controller.isGrounded)
-        {
-            currentMovement.x += verticalMovement.x * currentSpeed;
-            currentMovement.z += verticalMovement.z * currentSpeed;
-        }
-        else
+        if (controller.isGrounded)
         {
             currentMovement.x = verticalMovement.x * currentSpeed;
             currentMovement.z = verticalMovement.z * currentSpeed;

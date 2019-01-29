@@ -18098,21 +18098,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7577751236390129958, guid: ec957fe6cdb593a4f9e173a9d761700c,
-        type: 3}
-      propertyPath: airMovementMultiplier
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 8990324050017052421, guid: ec957fe6cdb593a4f9e173a9d761700c,
-        type: 3}
-      propertyPath: hookStrength
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 8990324050017052421, guid: ec957fe6cdb593a4f9e173a9d761700c,
-        type: 3}
-      propertyPath: maxRange
-      value: 1000
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ec957fe6cdb593a4f9e173a9d761700c, type: 3}
 --- !u!1 &1484012611

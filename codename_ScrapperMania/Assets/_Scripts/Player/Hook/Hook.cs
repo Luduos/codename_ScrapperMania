@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class Hook : MonoBehaviour
 {
+    [Header("Buttons")]
     [SerializeField]
-    private HookButtonInfo hookButtons = new HookButtonInfo();
+    private PlayerButtons playerButtons = null;
 
     [Header("Hook feeling")]
     [SerializeField]
@@ -16,8 +17,6 @@ public class Hook : MonoBehaviour
     private float hookStrength = 20.0f;
 
     [Header("Script Access")]
-    
-   
     [SerializeField]
     [Tooltip("The object from which the hook originates (comes out from)")]
     private Transform hookOrigin = null;
@@ -33,6 +32,8 @@ public class Hook : MonoBehaviour
 
     [SerializeField]
     private HookVisualizer visualizer = null;
+
+    
 
     private bool isHooking = false;
     private RaycastHit hit;
@@ -52,14 +53,14 @@ public class Hook : MonoBehaviour
     {
         if (!isHooking)
         {
-            if (Input.GetButtonDown(hookButtons.HookButton))
+            if (Input.GetButtonDown(playerButtons.hookButton))
                 StartHook();
         }
         else
         {
-            if (Input.GetButton(hookButtons.HookButton))
+            if (Input.GetButton(playerButtons.hookButton))
                 UpdateHook();
-            if (Input.GetButtonUp(hookButtons.HookButton))
+            if (Input.GetButtonUp(playerButtons.hookButton))
                 StopHook();
         }
     }
@@ -106,10 +107,4 @@ public class Hook : MonoBehaviour
 
         visualizer.ShowHookEnd();
     }
-}
-
-[System.Serializable]
-public class HookButtonInfo
-{
-    public string HookButton = "Fire1";
 }
