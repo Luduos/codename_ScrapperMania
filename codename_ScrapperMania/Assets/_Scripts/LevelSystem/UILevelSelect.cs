@@ -26,11 +26,9 @@ public class UILevelSelect : MonoBehaviour
         BuildLevelPage(0);
     }
 
-    // We probably only have 1 page with 10 missions
-    // If multiple pages are used, destroy method should be implemented
+  
     private void BuildLevelPage(int page)
     {
-        // RemoveItemsFromPage();
         currentPage = page;
         int pageSize = 11;
         List<UILevel> pageList = levelList.Skip(page * pageSize).Take(pageSize).ToList();

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: c38e29e265e2f0d4fb054e421714cac7
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - lockImage: {fileID: 21300000, guid: ff0bd3553ef26124da312c1415fa9b6b, type: 3}
+  - backgroundImage: {instanceID: 0}
+  - parentPanel: {fileID: 6012216422611656429, guid: 5b37a097687def04fb9268345bc2e401,
+      type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

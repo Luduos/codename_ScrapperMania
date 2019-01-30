@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class UILevel : MonoBehaviour
 {
-    public Level level;
     public Text levelNameText;
     public GameObject lockImage;
 

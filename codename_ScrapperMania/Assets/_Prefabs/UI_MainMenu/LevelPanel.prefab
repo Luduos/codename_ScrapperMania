@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6012216422611656426}
   - component: {fileID: 6012216422611656427}
   - component: {fileID: 6012216422611656428}
-  - component: {fileID: 793792679285605424}
+  - component: {fileID: 6012216422611656425}
   m_Layer: 5
   m_Name: MissionPanel
   m_TagString: Untagged
@@ -100,7 +100,7 @@ MonoBehaviour:
   m_Spacing: {x: 0, y: 3}
   m_Constraint: 0
   m_ConstraintCount: 2
---- !u!114 &793792679285605424
+--- !u!114 &6012216422611656425
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -109,10 +109,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 6012216422611656430}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 43bde90f4b4a24d459e13c1339153f64, type: 3}
+  m_Script: {fileID: 11500000, guid: eb762a7d8e746a444a7f706e5cdd3599, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  missions: []
-  missionUI: {fileID: 6992665227740187554, guid: 94561d3cb9026be4a930db5f8de48dc3,
-    type: 3}
+  levelUI: {fileID: 1806221399847558361, guid: c0aecf09ded5b684a9bef4934136a296, type: 3}
   levelPopup: {fileID: 0}

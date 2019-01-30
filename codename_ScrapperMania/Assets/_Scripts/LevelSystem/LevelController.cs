@@ -5,9 +5,17 @@ using UnityEngine.SceneManagement;
 
 public class LevelController : MonoBehaviour
 {
-
+    public static LevelController instance
+    {
+        get
+        {
+            if (null == _instance)
+                _instance = FindObjectOfType<LevelController>();
+            return _instance;
+        }
+    }
+    private static LevelController _instance;
     public List<Level> levels;
-    public static LevelController instance;
 
     void Awake()
     {
@@ -43,5 +51,21 @@ public class LevelController : MonoBehaviour
     public void CompleteLevel(string levelName, int score)
     {
         levels.Find(i => i.LevelName == levelName).Complete(score);
+    }
+
+    public void LockLevel(string levelName)
+    {
+        levels.Find(i => i.LevelName == levelName).Lock();
+    }
+
+    public void UnlockLevel(string levelName)
+    {
+        levels.Find(i => i.LevelName == levelName).Unlock();
+    }
+
+    public void UnlockNextLevel(string currentLevel)
+    {
+        int currentLevelID = levels.Find(i => i.LevelName == currentLevel).ID;
+        levels.Find(i => i.ID == currentLevelID + 1).Unlock();
     }
 }

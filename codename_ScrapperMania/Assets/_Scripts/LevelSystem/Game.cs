@@ -15,6 +15,7 @@ public class Game : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.C))
         {
             levelController.CompleteLevel("First Theft", 5400);
+            levelController.UnlockNextLevel("First Theft");
         }
         if(Input.GetKeyDown(KeyCode.L))
         {
