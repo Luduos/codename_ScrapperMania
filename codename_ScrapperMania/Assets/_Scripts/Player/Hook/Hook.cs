@@ -32,20 +32,17 @@ public class Hook : MonoBehaviour
     private RaycastHit hit;
 
     // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
-        if (!isHooking)
-        {
-            if (Input.GetButtonDown(playerButtons.hookButton))
-                StartHook();
-        }
-        else
-        {
-            if (Input.GetButton(playerButtons.hookButton))
-                UpdateHook();
-            if (Input.GetButtonUp(playerButtons.hookButton))
-                StopHook();
-        }
+
+        if (Input.GetButtonDown(playerButtons.hookButton))
+            StartHook();
+
+        if (isHooking && Input.GetButton(playerButtons.hookButton))
+            UpdateHook();
+        if (Input.GetButtonUp(playerButtons.hookButton))
+            StopHook();
+        
     }
 
     private void StartHook()
@@ -53,10 +50,9 @@ public class Hook : MonoBehaviour
         //playerMovement.UseGravity = false;
 
         RaycastHit hit;
-        bool registeredHit = Physics.Raycast(this.transform.position, playerCamera.transform.forward, out hit, maxRange);
-        if (registeredHit)
+        isHooking = Physics.Raycast(this.transform.position, playerCamera.transform.forward, out hit, maxRange);
+        if (isHooking)
         {
-            isHooking = true;
             this.hit = hit;
             visualizer.ShowHookStart();
         }
@@ -76,7 +72,7 @@ public class Hook : MonoBehaviour
         }
         else
         {
-            Vector3 hookMovement = hookToHit.normalized * hookStrength;
+            Vector3 hookMovement = hookToHit * hookStrength;
             controller.Move(hookMovement * Time.fixedDeltaTime);
 
             visualizer.ShowHookUpdate(this.transform.position, hit.point);
@@ -87,7 +83,6 @@ public class Hook : MonoBehaviour
     {
         isHooking = false;
         //playerMovement.UseGravity = true;
-
         visualizer.ShowHookEnd();
     }
 }

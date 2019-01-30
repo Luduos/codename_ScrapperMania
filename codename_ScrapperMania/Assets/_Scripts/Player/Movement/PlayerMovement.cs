@@ -55,14 +55,14 @@ public class PlayerMovement : MonoBehaviour
     /// How long has the player been in the air?
     /// </summary>
     private float inAirTimer = 0f;
-    /// <summary>
-    /// How fast is the player when leaving the ground? 
-    /// This is used to keep him flying into a certain direction, 
-    /// </summary>
-    private Vector2 airStartVelocity = Vector2.zero;
+ 
 
     private float currentSpeed = 0.0f;
-    private Vector3 currentMovement = Vector3.zero;
+    private Vector3 velocity = Vector3.zero;
+
+
+    private Vector2 input = Vector2.zero;
+    private bool pressedJump = false;
 
     private void Awake()
     {
@@ -77,16 +77,25 @@ public class PlayerMovement : MonoBehaviour
 
     }
 
-    void FixedUpdate()
+    void Update()
     {
+        GetInput();
         UpdateMovementSpeed();
         if(UseGravity)
             ApplyGravity();
         VerticalMovement();
         Jump();
 
-        rigidBody.MovePosition(transform.position + currentMovement * Time.fixedDeltaTime);
-        controller.Move(currentMovement * Time.fixedDeltaTime);
+        controller.Move(velocity * Time.deltaTime);
+    }
+
+    private void GetInput()
+    {
+        float horizontalAxis = CrossPlatformInputManager.GetAxisRaw(playerButtons.horizontalAxisName);
+        float verticalAxis = CrossPlatformInputManager.GetAxisRaw(playerButtons.verticalAxisName);
+        input.Set(horizontalAxis, verticalAxis);
+
+        pressedJump = CrossPlatformInputManager.GetButton(playerButtons.jumpButtonName);
     }
 
     private void UpdateMovementSpeed()
@@ -104,34 +113,28 @@ public class PlayerMovement : MonoBehaviour
     {
         if (!controller.isGrounded)
         {
-            Vector3 gravityVector = Physics.gravity * Time.fixedDeltaTime;
+            Vector3 gravityVector = Physics.gravity * Time.deltaTime;
             // we are currently going down = falling
             if (Vector3.Dot(rigidBody.velocity, Physics.gravity) > 0)
-                currentMovement += gravityVector * fallGravityMultiplier;
+                velocity += gravityVector * fallGravityMultiplier;
             else
-                currentMovement += gravityVector * jumpGravityMultiplier;
+                velocity += gravityVector * jumpGravityMultiplier;
         }
         else
-            currentMovement.y = -stickToGroundForce * Time.fixedDeltaTime;
+            velocity.y = -stickToGroundForce * Time.deltaTime;
     }
 
     private void VerticalMovement()
     {
-        float horizontalAxis = CrossPlatformInputManager.GetAxisRaw(playerButtons.horizontalAxisName);
-        float verticalAxis = CrossPlatformInputManager.GetAxisRaw(playerButtons.verticalAxisName);
-
         // projects camera forward vector onto x and z plane       
         Vector3 projectedForward = Vector3.ProjectOnPlane(playerCam.transform.forward, Vector3.up);
-        Vector3 verticalMovement = projectedForward * verticalAxis + playerCam.transform.right * horizontalAxis;
+        Vector3 verticalMovement = projectedForward * input.y + playerCam.transform.right * input.x;
         verticalMovement.Normalize();
 
-        
-
-        // keep speed in air
         if (controller.isGrounded)
         {
-            currentMovement.x = verticalMovement.x * currentSpeed;
-            currentMovement.z = verticalMovement.z * currentSpeed;
+            velocity.x = verticalMovement.x * currentSpeed;
+            velocity.z = verticalMovement.z * currentSpeed;
         }
     }
 
@@ -149,10 +152,9 @@ public class PlayerMovement : MonoBehaviour
 
         // Can't jump if we've been falling too long or if we allready pressed jump
         bool canJump = inAirTimer < timeForJump && !performedJump;
-        if (CrossPlatformInputManager.GetButton(playerButtons.jumpButtonName) && canJump)
+        if (pressedJump && canJump)
         {
-            currentMovement += Vector3.up * jumpStrength;
-            airStartVelocity.Set(rigidBody.velocity.x, rigidBody.velocity.z);
+            velocity += Vector3.up * jumpStrength;
             performedJump = true;
         }
     }
