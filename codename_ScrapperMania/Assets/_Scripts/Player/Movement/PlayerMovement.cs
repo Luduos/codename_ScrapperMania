@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
 
-[RequireComponent(typeof(Collider), typeof(Rigidbody))]
+[RequireComponent(typeof(CharacterController), typeof(Rigidbody))]
 public class PlayerMovement : MonoBehaviour
 {
     public bool UseGravity { get; set; }
@@ -44,7 +44,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     private PlayerButtons playerButtons = null;
 
-    private Collider playerCollider = null;
+    private CharacterController controller = null;
     private Rigidbody rigidBody = null;
 
     /// <summary>
@@ -85,12 +85,13 @@ public class PlayerMovement : MonoBehaviour
         VerticalMovement();
         Jump();
 
+        rigidBody.MovePosition(transform.position + currentMovement * Time.fixedDeltaTime);
         controller.Move(currentMovement * Time.fixedDeltaTime);
     }
 
     private void UpdateMovementSpeed()
     {
-        if (CrossPlatformInputManager.GetButton("Walk"))
+        if (CrossPlatformInputManager.GetButton(playerButtons.walkButtonName))
             currentSpeed = walkSpeed;
         else
             currentSpeed = runSpeed;
@@ -105,7 +106,7 @@ public class PlayerMovement : MonoBehaviour
         {
             Vector3 gravityVector = Physics.gravity * Time.fixedDeltaTime;
             // we are currently going down = falling
-            if (Vector3.Dot(controller.velocity, Physics.gravity) > 0)
+            if (Vector3.Dot(rigidBody.velocity, Physics.gravity) > 0)
                 currentMovement += gravityVector * fallGravityMultiplier;
             else
                 currentMovement += gravityVector * jumpGravityMultiplier;
@@ -117,7 +118,7 @@ public class PlayerMovement : MonoBehaviour
     private void VerticalMovement()
     {
         float horizontalAxis = CrossPlatformInputManager.GetAxisRaw(playerButtons.horizontalAxisName);
-        float verticalAxis = CrossPlatformInputManager.GetAxisRaw("Vertical");
+        float verticalAxis = CrossPlatformInputManager.GetAxisRaw(playerButtons.verticalAxisName);
 
         // projects camera forward vector onto x and z plane       
         Vector3 projectedForward = Vector3.ProjectOnPlane(playerCam.transform.forward, Vector3.up);
@@ -148,10 +149,10 @@ public class PlayerMovement : MonoBehaviour
 
         // Can't jump if we've been falling too long or if we allready pressed jump
         bool canJump = inAirTimer < timeForJump && !performedJump;
-        if (CrossPlatformInputManager.GetButton("Jump") && canJump)
+        if (CrossPlatformInputManager.GetButton(playerButtons.jumpButtonName) && canJump)
         {
             currentMovement += Vector3.up * jumpStrength;
-            airStartVelocity.Set(controller.velocity.x, controller.velocity.z);
+            airStartVelocity.Set(rigidBody.velocity.x, rigidBody.velocity.z);
             performedJump = true;
         }
     }
