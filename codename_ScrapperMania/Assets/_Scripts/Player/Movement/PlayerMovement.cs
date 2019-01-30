@@ -40,8 +40,9 @@ public class PlayerMovement : MonoBehaviour
     [Tooltip("Seconds after falling during which we can still jump.")]
     private float timeForJump = 0.5f;
 
+    [Header("Buttons")]
     [SerializeField]
-    private MovementButtonInfo movementInfo = new MovementButtonInfo();
+    private PlayerButtons playerButtons = null;
 
     private CharacterController controller = null;
     private Rigidbody rigidBody = null;
@@ -84,12 +85,13 @@ public class PlayerMovement : MonoBehaviour
         VerticalMovement();
         Jump();
 
+        rigidBody.MovePosition(transform.position + currentMovement * Time.fixedDeltaTime);
         controller.Move(currentMovement * Time.fixedDeltaTime);
     }
 
     private void UpdateMovementSpeed()
     {
-        if (CrossPlatformInputManager.GetButton("Walk"))
+        if (CrossPlatformInputManager.GetButton(playerButtons.walkButtonName))
             currentSpeed = walkSpeed;
         else
             currentSpeed = runSpeed;
@@ -104,7 +106,7 @@ public class PlayerMovement : MonoBehaviour
         {
             Vector3 gravityVector = Physics.gravity * Time.fixedDeltaTime;
             // we are currently going down = falling
-            if (Vector3.Dot(controller.velocity, Physics.gravity) > 0)
+            if (Vector3.Dot(rigidBody.velocity, Physics.gravity) > 0)
                 currentMovement += gravityVector * fallGravityMultiplier;
             else
                 currentMovement += gravityVector * jumpGravityMultiplier;
@@ -115,8 +117,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void VerticalMovement()
     {
-        float horizontalAxis = CrossPlatformInputManager.GetAxisRaw("Horizontal");
-        float verticalAxis = CrossPlatformInputManager.GetAxisRaw("Vertical");
+        float horizontalAxis = CrossPlatformInputManager.GetAxisRaw(playerButtons.horizontalAxisName);
+        float verticalAxis = CrossPlatformInputManager.GetAxisRaw(playerButtons.verticalAxisName);
 
         // projects camera forward vector onto x and z plane       
         Vector3 projectedForward = Vector3.ProjectOnPlane(playerCam.transform.forward, Vector3.up);
@@ -126,12 +128,7 @@ public class PlayerMovement : MonoBehaviour
         
 
         // keep speed in air
-        if (!controller.isGrounded)
-        {
-            currentMovement.x += verticalMovement.x * currentSpeed;
-            currentMovement.z += verticalMovement.z * currentSpeed;
-        }
-        else
+        if (controller.isGrounded)
         {
             currentMovement.x = verticalMovement.x * currentSpeed;
             currentMovement.z = verticalMovement.z * currentSpeed;
@@ -152,10 +149,10 @@ public class PlayerMovement : MonoBehaviour
 
         // Can't jump if we've been falling too long or if we allready pressed jump
         bool canJump = inAirTimer < timeForJump && !performedJump;
-        if (CrossPlatformInputManager.GetButton("Jump") && canJump)
+        if (CrossPlatformInputManager.GetButton(playerButtons.jumpButtonName) && canJump)
         {
             currentMovement += Vector3.up * jumpStrength;
-            airStartVelocity.Set(controller.velocity.x, controller.velocity.z);
+            airStartVelocity.Set(rigidBody.velocity.x, rigidBody.velocity.z);
             performedJump = true;
         }
     }

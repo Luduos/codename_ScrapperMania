@@ -44,3 +44,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
+  playerButtons: {fileID: 11400000, guid: 4f3975fde6fe86345a17de77acfdc2bb, type: 2}
