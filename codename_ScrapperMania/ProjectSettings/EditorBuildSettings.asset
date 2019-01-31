@@ -5,7 +5,16 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
   - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
-    guid: 99c9720ab356a0642a771bea13969a05
+    path: Assets/__Scenes/develop/MainMenu.unity
+    guid: 95ee2d901e78b1b439eccf40c8c8da85
+  - enabled: 1
+    path: Assets/__Scenes/develop/Missions/Introduction.unity
+    guid: ed58ab2a94594a54795a9e16cc6914cc
+  - enabled: 1
+    path: Assets/__Scenes/develop/Missions/First Theft.unity
+    guid: bf45e9b3ee8048e49952bc68c6feaa9b
   m_configObjects: {}
