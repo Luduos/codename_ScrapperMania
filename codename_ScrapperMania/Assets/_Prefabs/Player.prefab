@@ -45,8 +45,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   minDistance: 0
-  maxRange: 1000
-  hookStrength: 50
+  maxRange: 100
+  hookStrength: 5
   playerCamera: {fileID: 8800252042212535055}
   playerMovement: {fileID: 7473929980379497930}
   controller: {fileID: 7758784254835147539}
@@ -241,11 +241,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerCam: {fileID: 8800252042212535055}
-  groundCheck: {fileID: 0}
-  runSpeed: 10
-  walkSpeed: 5
-  airMovementMultiplier: 0.5
-  jumpStrength: 10
+  maxRunSpeed: 10
+  maxWalkSpeed: 5
+  moveAcceleration: 100
+  groundFriction: 200
+  jumpStrength: 750
+  airMovementMultiplier: 0.25
   stickToGroundForce: 5
   jumpGravityMultiplier: 3
   fallGravityMultiplier: 2
