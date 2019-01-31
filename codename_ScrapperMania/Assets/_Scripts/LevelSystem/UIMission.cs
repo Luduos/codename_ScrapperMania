@@ -5,10 +5,13 @@ using UnityEngine.UI;
 
 public class UIMission : MonoBehaviour
 {
-    public Text missionNameText;
-    public Text missionDescription;
-    public Image missionImage;
-    public GameObject lockImage;
+    public bool isHighlighted;
+
+    [SerializeField] private Color normalTextColor;
+    [SerializeField] private Color highlightedTextColor;
+    [SerializeField] private Text missionNameText;
+    [SerializeField] private Image lockImage;
+    public Image LockImage { get { return lockImage; } }
 
     private Transform missionScoreParent;
     private Text score;
@@ -17,6 +20,27 @@ public class UIMission : MonoBehaviour
     {
         missionScoreParent = transform.Find("Score").transform;
         score = missionScoreParent.GetComponentInChildren<Text>();
+    }
+
+    public void SetMissionName(string missionName)
+    {
+        missionNameText.text = missionName;
+    }
+
+    public void ChangeColor()
+    {
+        if (isHighlighted)
+        {
+            lockImage.color = highlightedTextColor;
+            missionNameText.color = highlightedTextColor;
+            score.color = highlightedTextColor;
+        }
+        else
+        {
+            lockImage.color = normalTextColor;
+            missionNameText.color = normalTextColor;
+            score.color = normalTextColor;
+        }
     }
 
     public void SetScore(float seconds)

@@ -35,7 +35,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
   m_AnchoredPosition: {x: -10, y: 0}
-  m_SizeDelta: {x: 25, y: 25}
+  m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!222 &511960697
 CanvasRenderer:
@@ -267,7 +267,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Mission 1
+  m_Text: abc
 --- !u!1 &3940984033556960861
 GameObject:
   m_ObjectHideFlags: 0
@@ -280,9 +280,9 @@ GameObject:
   - component: {fileID: 3940984033556960866}
   - component: {fileID: 3940984033556960867}
   - component: {fileID: 7830358821882308181}
-  - component: {fileID: 1806221399847558361}
+  - component: {fileID: 6992665227740187554}
   m_Layer: 5
-  m_Name: Mission
+  m_Name: UIMission
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -331,7 +331,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.0627451, g: 0.078431375, b: 0.101960786, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -367,9 +367,9 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_NormalColor: {r: 0.0627451, g: 0.078431375, b: 0.10196079, a: 1}
+    m_HighlightedColor: {r: 0.11764706, g: 0.9372549, b: 0.99607843, a: 1}
+    m_PressedColor: {r: 0.0627451, g: 0.21568629, b: 0.25490198, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -389,7 +389,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
---- !u!114 &1806221399847558361
+--- !u!114 &6992665227740187554
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -398,9 +398,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 3940984033556960861}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a7498f0bbd95b04b9264a851630f3f1, type: 3}
+  m_Script: {fileID: 11500000, guid: 8fe28b46726140a4b9ff3359b912927e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  level: {fileID: 0}
-  levelNameText: {fileID: 2030353508}
-  lockImage: {fileID: 511960694}
+  isHighlighted: 0
+  normalTextColor: {r: 0.6666667, g: 0.6666667, b: 0.6666667, a: 1}
+  highlightedTextColor: {r: 0, g: 0, b: 0, a: 1}
+  missionNameText: {fileID: 2030353508}
+  lockImage: {fileID: 511960696}

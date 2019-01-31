@@ -13,6 +13,7 @@ public class Mission : ScriptableObject
     public float missionScore = 0f;
 
     private int missionID = -1;
+    public int MissionID { get { return missionID; } }
 
     [Header("UI Attributes")]
     public Sprite backgroundSprite;
@@ -44,9 +45,11 @@ public class Mission : ScriptableObject
         this.missionScore = score;
     }
 
-    public void Lock()
+    public void Reset()
     {
         this.isLocked = true;
+        this.isCompleted = false;
+        this.missionScore = 0f;
     }
 
     public void Unlock()

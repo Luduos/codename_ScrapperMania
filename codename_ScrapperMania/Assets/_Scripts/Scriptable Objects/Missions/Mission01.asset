@@ -12,13 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c38e29e265e2f0d4fb054e421714cac7, type: 3}
   m_Name: Mission01
   m_EditorClassIdentifier: 
-  missionID: 1
   missionName: First Theft
   isLocked: 0
-  isCompleted: 0
-  missionScore: 0
+  isCompleted: 1
+  missionScore: 5400
+  backgroundSprite: {fileID: 21300000, guid: c8dc8500d4ab0984993b359965b63aaa, type: 3}
+  missionDescription: My first Theft
   lockImage: {fileID: 21300000, guid: ff0bd3553ef26124da312c1415fa9b6b, type: 3}
-  backgroundImage: {fileID: 0}
-  missionDescription: 
-  parentPanel: {fileID: 6012216422611656429, guid: 5b37a097687def04fb9268345bc2e401,
-    type: 3}

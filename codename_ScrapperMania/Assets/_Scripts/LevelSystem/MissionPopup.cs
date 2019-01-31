@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class LevelPopup : MonoBehaviour
+public class MissionPopup : MonoBehaviour
 {
     public Text popupText;
 

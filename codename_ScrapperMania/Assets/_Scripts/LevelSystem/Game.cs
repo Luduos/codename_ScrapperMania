@@ -1,25 +1,33 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+
 
 public class Game : MonoBehaviour
 {
-    private LevelController levelController;
-    private void Awake()
+    public MissionController missionController;
+    private Scene currentScene;
+
+    private void Start()
     {
-        levelController = FindObjectOfType<LevelController>();
+        currentScene = SceneManager.GetActiveScene();
     }
 
     private void Update()
     {
         if(Input.GetKeyDown(KeyCode.C))
         {
-            levelController.CompleteLevel("First Theft", 5400);
-            levelController.UnlockNextLevel("First Theft");
+            missionController.CompletedMission(currentScene.name, 5400f);
         }
-        if(Input.GetKeyDown(KeyCode.L))
+        if(Input.GetKeyDown(KeyCode.M))
         {
-            levelController.StartLevel("MainMenu");
+            missionController.BackToMainMenu();
         }
+        if(Input.GetKeyDown(KeyCode.R))
+        {
+            missionController.Reset(currentScene.name);
+        }
+
     }
 }
