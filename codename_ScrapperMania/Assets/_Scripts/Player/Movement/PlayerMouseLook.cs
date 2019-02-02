@@ -4,18 +4,20 @@ using UnityStandardAssets.CrossPlatformInput;
 
 public class PlayerMouseLook : MonoBehaviour
 {
-    public float mouseSensitivity = 100.0f;
-    public float clampAngle = 80.0f;
+    [SerializeField]
+    private float _mouseSensitivity = 100.0f;
+    [SerializeField]
+    private float _clampAngle = 80.0f;
     
-    private float rotY = 0.0f; // rotation around the up/y axis
-    private float rotX = 0.0f; // rotation around the right/x axis
+    private float _rotY = 0.0f; // rotation around the up/y axis
+    private float _rotX = 0.0f; // rotation around the right/x axis
 
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
         Vector3 rot = transform.localRotation.eulerAngles;
-        rotX = rot.x;
-        rotY = rot.y;
+        _rotX = rot.x;
+        _rotY = rot.y;
     }
 
     private void FixedUpdate()
@@ -28,12 +30,12 @@ public class PlayerMouseLook : MonoBehaviour
         float mouseX = CrossPlatformInputManager.GetAxis("Mouse X");
         float mouseY = -CrossPlatformInputManager.GetAxis("Mouse Y");
 
-        rotX += mouseX * mouseSensitivity * Time.fixedDeltaTime;
-        rotY += mouseY * mouseSensitivity * Time.fixedDeltaTime;
+        _rotX += mouseX * _mouseSensitivity * Time.fixedDeltaTime;
+        _rotY += mouseY * _mouseSensitivity * Time.fixedDeltaTime;
 
-        rotY = Mathf.Clamp(rotY, -clampAngle, clampAngle);
+        _rotY = Mathf.Clamp(_rotY, -_clampAngle, _clampAngle);
 
-        Quaternion localRotation = Quaternion.Euler(rotY, rotX, 0.0f);
+        Quaternion localRotation = Quaternion.Euler(_rotY, _rotX, 0.0f);
         transform.rotation = localRotation;
     }
 }
