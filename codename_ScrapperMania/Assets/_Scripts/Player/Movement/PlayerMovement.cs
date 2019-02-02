@@ -9,40 +9,14 @@ public class PlayerMovement : MonoBehaviour
 {
     public bool UseGravity { get; set; }
 
+    public float GroundFriction { get { return _info.groundFriction; } set { _info.groundFriction = value; } }
+
     [SerializeField]
     private Camera _playerCam = null;
     [SerializeField]
     private Hook _hook = null;
-
-    [Header("Vertical Movement Variables")]
     [SerializeField]
-    private float _maxRunSpeed = 15f;
-    [SerializeField]
-    private float _maxWalkSpeed = 10f;
-    [SerializeField]
-    private float _moveAcceleration = 125f;
-    [SerializeField]
-    private float _groundFriction = 250f;
-    public float GroundFriction { get { return _groundFriction; } set { _groundFriction = value; } }
-
-    [Header("Jump Feeling Adjustment")]
-    [SerializeField]
-    private float _jumpStrength = 1250;
-    [SerializeField]
-    [Range(0f,1f)]
-    private float _airMovementMultiplier = 0.2f;
-    [SerializeField]
-    [Tooltip("How \"difficult\" is it to get off the ground?")]
-    private float _stickToGroundForce = 50f;
-    [SerializeField]
-    [Tooltip("Multiplier while jumping up.")]
-    private float _jumpGravityMultiplier = 5.0f;
-    [SerializeField]
-    [Tooltip("Multiplier while falling down.")]
-    private float _fallGravityMultiplier = 3.0f;
-    [SerializeField]
-    [Tooltip("Seconds after falling during which we can still jump.")]
-    private float _timeForJump = 0.25f;
+    private PlayerMovementInfo _info = null;   
 
     [Header("Buttons")]
     [SerializeField]
@@ -88,19 +62,23 @@ public class PlayerMovement : MonoBehaviour
         GetInput();
         UpdateSpeed();
 
-        //if (UseGravity && !_hook.Info.IsHooking)
-        if(UseGravity)
-            ApplyGravity();
+        // only use gravity if gravity is activated
+        if (UseGravity)
+        {
+            // then use gravity either if allowed during hook or if not hooking
+            if (_hook.Hit.UseGravity || !_hook.Hit.IsHooking)
+                ApplyGravity();
+        }
 
         VerticalMovement();
         Jump();
 
-        if(!_hook.Info.IsHooking)
+        if(!_hook.Hit.IsHooking)
             ApplyFriction();
 
         CalculateNormalVelocity();
-        if (_hook.Info.IsHooking)
-            velocity += _hook.Info.HookAcceleration * Time.fixedDeltaTime;
+        if (_hook.Hit.IsHooking)
+            velocity += _hook.Hit.HookAcceleration * Time.fixedDeltaTime;
 
         _controller.Move(velocity * Time.fixedDeltaTime);
     }
@@ -119,13 +97,13 @@ public class PlayerMovement : MonoBehaviour
     private void UpdateSpeed()
     {
         if (CrossPlatformInputManager.GetButton(_playerButtons.walkButtonName))
-            maxSpeed = _maxWalkSpeed;
+            maxSpeed = _info.maxWalkSpeed;
         else
-            maxSpeed = _maxRunSpeed;
+            maxSpeed = _info.maxRunSpeed;
 
-        currentAcceleration = _moveAcceleration;
+        currentAcceleration = _info.moveAcceleration;
         if (!_controller.isGrounded)
-            currentAcceleration *= _airMovementMultiplier;
+            currentAcceleration *= _info.airMovementMultiplier;
     }
 
     private void ApplyGravity()
@@ -135,12 +113,12 @@ public class PlayerMovement : MonoBehaviour
             Vector3 gravityVector = Physics.gravity;
             // we are currently going down = falling
             if (Vector3.Dot(_rigidBody.velocity, Physics.gravity) > 0)
-                acceleration += gravityVector * _fallGravityMultiplier;
+                acceleration += gravityVector * _info.fallGravityMultiplier;
             else
-                acceleration += gravityVector * _jumpGravityMultiplier;
+                acceleration += gravityVector * _info.jumpGravityMultiplier;
         }
         else
-            acceleration.y += -_stickToGroundForce;
+            acceleration.y += -_info.stickToGroundForce;
     }
 
     private void VerticalMovement()
@@ -167,10 +145,10 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // Can't jump if we've been falling too long or if we allready pressed jump
-        bool canJump = inAirTimer < _timeForJump && !performedJump;
+        bool canJump = inAirTimer < _info.timeForJump && !performedJump;
         if (pressedJump && canJump)
         {
-            acceleration += Vector3.up * _jumpStrength;
+            acceleration += Vector3.up * _info.jumpStrength;
 
             pressedJump = false;
             performedJump = true;

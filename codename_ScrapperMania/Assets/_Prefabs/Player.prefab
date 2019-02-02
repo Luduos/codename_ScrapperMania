@@ -44,9 +44,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5c171be627bbaf4cb34b21112de5c63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _minDistance: 1
-  _maxHookStrengthDistance: 50
-  _maxRange: 100
+  _minDistance: 0
+  _maxHookStrengthDistance: 10
+  _maxRange: 50
   _hookStrength: 20
   _playerCamera: {fileID: 8800252042212535055}
   _visualizer: {fileID: 7574926809174083072}
@@ -241,16 +241,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerCam: {fileID: 8800252042212535055}
   _hook: {fileID: 8990324050017052421}
-  _maxRunSpeed: 15
-  _maxWalkSpeed: 10
-  _moveAcceleration: 125
-  _groundFriction: 250
-  _jumpStrength: 1250
-  _airMovementMultiplier: 0.2
-  _stickToGroundForce: 50
-  _jumpGravityMultiplier: 5
-  _fallGravityMultiplier: 3
-  _timeForJump: 0.25
+  _info: {fileID: 11400000, guid: 5204ee8358c58d848850312636df1b0a, type: 2}
   _playerButtons: {fileID: 11400000, guid: 4f3975fde6fe86345a17de77acfdc2bb, type: 2}
 --- !u!54 &3796309354641452579
 Rigidbody:
