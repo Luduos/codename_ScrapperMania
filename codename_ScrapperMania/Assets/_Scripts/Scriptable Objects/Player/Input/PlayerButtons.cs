@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu]
+[CreateAssetMenu(menuName = "Player/Player Buttons")]
 public class PlayerButtons : ScriptableObject
 {
     public string horizontalAxisName = "Horizontal";

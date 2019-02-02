@@ -414,56 +414,12 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7473929980379497930, guid: ec957fe6cdb593a4f9e173a9d761700c,
-        type: 3}
-      propertyPath: _maxRunSpeed
-      value: 12
-      objectReference: {fileID: 0}
-    - target: {fileID: 7473929980379497930, guid: ec957fe6cdb593a4f9e173a9d761700c,
-        type: 3}
-      propertyPath: _maxWalkSpeed
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 7473929980379497930, guid: ec957fe6cdb593a4f9e173a9d761700c,
-        type: 3}
-      propertyPath: _jumpStrength
-      value: 1100
-      objectReference: {fileID: 0}
-    - target: {fileID: 7473929980379497930, guid: ec957fe6cdb593a4f9e173a9d761700c,
-        type: 3}
-      propertyPath: _stickToGroundForce
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7473929980379497930, guid: ec957fe6cdb593a4f9e173a9d761700c,
-        type: 3}
-      propertyPath: _jumpGravityMultiplier
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 7473929980379497930, guid: ec957fe6cdb593a4f9e173a9d761700c,
-        type: 3}
-      propertyPath: _fallGravityMultiplier
-      value: 4
-      objectReference: {fileID: 0}
     - target: {fileID: 8990324050017052421, guid: ec957fe6cdb593a4f9e173a9d761700c,
         type: 3}
-      propertyPath: _minDistance
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8990324050017052421, guid: ec957fe6cdb593a4f9e173a9d761700c,
-        type: 3}
-      propertyPath: _maxRange
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 8990324050017052421, guid: ec957fe6cdb593a4f9e173a9d761700c,
-        type: 3}
-      propertyPath: _maxHookStrengthDistance
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 8990324050017052421, guid: ec957fe6cdb593a4f9e173a9d761700c,
-        type: 3}
-      propertyPath: _hookStrength
-      value: 20
-      objectReference: {fileID: 0}
+      propertyPath: _info
+      value: 
+      objectReference: {fileID: 11400000, guid: d90ebc66de3044d418d6d55bc6194e03,
+        type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ec957fe6cdb593a4f9e173a9d761700c, type: 3}
 --- !u!4 &348636659 stripped

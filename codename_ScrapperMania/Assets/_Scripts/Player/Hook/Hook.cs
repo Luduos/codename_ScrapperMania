@@ -4,23 +4,8 @@ using UnityEngine;
 
 public class Hook : MonoBehaviour
 {
-    [Header("Hook feeling")]
     [SerializeField]
-    [Tooltip("If the hook length is below this threshold, the hook gets canceled")]
-    private float _minDistance = 1.0f;
-    /// <summary>
-    /// For distances below this the hook strength is also dependent on the distance.
-    /// Otherwise the hook strength is clamped to this value.
-    /// </summary>
-    [SerializeField]
-    [Tooltip("Distance from which on the distance dependent strength is clamped.")]
-    private float _maxHookStrengthDistance = 50;
-    [SerializeField]
-    [Tooltip("If a hook is shot and goes beyond this distance, the hook will fail to start.")]
-    private float _maxRange = 100f;
-
-    [SerializeField]
-    private float _hookStrength = 20.0f;
+    private HookInfo _info = null;
    
 
     [Header("Script Access")]
@@ -33,27 +18,27 @@ public class Hook : MonoBehaviour
     [SerializeField]
     private PlayerButtons _playerButtons = null;
 
-    private HookInfo _info = new HookInfo();
-    public HookInfo Info { get { return _info; } private set { _info = value; } }
+    private HookHit _hit = new HookHit();
+    public HookHit Hit { get { return _hit; } private set { _hit = value; } }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (!_info.IsHooking && Input.GetButtonDown(_playerButtons.hookButton))
+        if (!_hit.IsHooking && Input.GetButtonDown(_playerButtons.hookButton))
             StartHook();
-        if (_info.IsHooking && Input.GetButton(_playerButtons.hookButton))
+        if (_hit.IsHooking && Input.GetButton(_playerButtons.hookButton))
             UpdateHook();
-        if (_info.IsHooking && Input.GetButtonUp(_playerButtons.hookButton))
+        if (_hit.IsHooking && Input.GetButtonUp(_playerButtons.hookButton))
             StopHook();       
     }
 
     private void StartHook()
     {
         RaycastHit hit;
-        _info.IsHooking = Physics.Raycast(this.transform.position, _playerCamera.transform.forward, out hit, _maxRange);
-        if (_info.IsHooking)
+        _hit.IsHooking = Physics.Raycast(this.transform.position, _playerCamera.transform.forward, out hit, _info.maxRange);
+        if (_hit.IsHooking)
         {
-            _info.Hit = hit;
+            _hit.Hit = hit;
             _visualizer.ShowHookStart();
         }
         else
@@ -65,33 +50,39 @@ public class Hook : MonoBehaviour
 
     private void UpdateHook()
     {
-        Vector3 hookToHit = _info.Hit.point - this.transform.position;
-        _info.Length = hookToHit.magnitude;
+        _hit.UseGravity = _info.useGravity;
 
-        float hookStrengthMultiplier = Mathf.Clamp(_info.Length, 0f, _maxHookStrengthDistance);
-        if(_info.Length < _minDistance )
+        Vector3 hookToHit = _hit.Hit.point - this.transform.position;
+        _hit.Length = hookToHit.magnitude;
+
+        float hookStrengthMultiplier = Mathf.Clamp(_hit.Length, 0f, _info.maxHookStrengthDistance);
+        if(_hit.Length < _info.minDistance )
         {
             StopHook();
         }
         else
         {
-            _info.HookNormal = hookToHit.normalized;
-            _info.HookAcceleration = _info.HookNormal * hookStrengthMultiplier * _hookStrength;
+            _hit.HookNormal = hookToHit.normalized;
+            _hit.HookAcceleration = _hit.HookNormal * hookStrengthMultiplier * _info.hookStrength;
 
-            _visualizer.ShowHookUpdate(this.transform.position, _info.Hit.point);
+            _visualizer.ShowHookUpdate(this.transform.position, _hit.Hit.point);
         }
     }
 
     private void StopHook()
     {
-        _info.IsHooking = false;
+        _hit.IsHooking = false;
         _visualizer.ShowHookEnd();
     }
 }
 
-public class HookInfo
+/// <summary>
+/// Information about the current hook hit
+/// </summary>
+public class HookHit
 {
     public bool IsHooking { get; set; }
+    public bool UseGravity { get; set; }
     public float Length { get; set; }
     public Vector3 HookNormal { get; set; }
     public Vector3 HookAcceleration { get; set; }
