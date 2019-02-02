@@ -10,44 +10,46 @@ public class PlayerMovement : MonoBehaviour
     public bool UseGravity { get; set; }
 
     [SerializeField]
-    private Camera playerCam = null;
+    private Camera _playerCam = null;
+    [SerializeField]
+    private Hook _hook = null;
 
     [Header("Vertical Movement Variables")]
     [SerializeField]
-    private float maxRunSpeed = 0f;
+    private float _maxRunSpeed = 15f;
     [SerializeField]
-    private float maxWalkSpeed = 0f;
+    private float _maxWalkSpeed = 10f;
     [SerializeField]
-    private float moveAcceleration = 0f;
+    private float _moveAcceleration = 125f;
     [SerializeField]
-    private float groundFriction = 1.0f;
-    public float GroundFriction { get { return groundFriction; } set { groundFriction = value; } }
+    private float _groundFriction = 250f;
+    public float GroundFriction { get { return _groundFriction; } set { _groundFriction = value; } }
 
     [Header("Jump Feeling Adjustment")]
     [SerializeField]
-    private float jumpStrength = 0;
+    private float _jumpStrength = 1250;
     [SerializeField]
     [Range(0f,1f)]
-    private float airMovementMultiplier = 0.5f;
+    private float _airMovementMultiplier = 0.2f;
     [SerializeField]
     [Tooltip("How \"difficult\" is it to get off the ground?")]
-    private float stickToGroundForce = 1f;
+    private float _stickToGroundForce = 50f;
     [SerializeField]
     [Tooltip("Multiplier while jumping up.")]
-    private float jumpGravityMultiplier = 1.0f;
+    private float _jumpGravityMultiplier = 5.0f;
     [SerializeField]
     [Tooltip("Multiplier while falling down.")]
-    private float fallGravityMultiplier = 0.8f;
+    private float _fallGravityMultiplier = 3.0f;
     [SerializeField]
     [Tooltip("Seconds after falling during which we can still jump.")]
-    private float timeForJump = 0.5f;
+    private float _timeForJump = 0.25f;
 
     [Header("Buttons")]
     [SerializeField]
-    private PlayerButtons playerButtons = null;
+    private PlayerButtons _playerButtons = null;
 
-    private CharacterController controller = null;
-    private Rigidbody rigidBody = null;
+    private CharacterController _controller = null;
+    private Rigidbody _rigidBody = null;
 
     /// <summary>
     /// Whether or not the player performed a jump since he gleft the ground.
@@ -71,8 +73,8 @@ public class PlayerMovement : MonoBehaviour
     {
         UseGravity = true;
 
-        controller = GetComponent<CharacterController>();
-        rigidBody = GetComponent<Rigidbody>();
+        _controller = GetComponent<CharacterController>();
+        _rigidBody = GetComponent<Rigidbody>();
     }
 
     void Start()
@@ -85,77 +87,67 @@ public class PlayerMovement : MonoBehaviour
         acceleration = Vector3.zero;
         GetInput();
         UpdateSpeed();
+
+        //if (UseGravity && !_hook.Info.IsHooking)
         if(UseGravity)
             ApplyGravity();
+
         VerticalMovement();
         Jump();
 
-        if (input.sqrMagnitude < Mathf.Epsilon && controller.isGrounded)
-        {
-            Vector3 projectedVelocity = Vector3.ProjectOnPlane(controller.velocity, Vector3.up);
-            acceleration -= projectedVelocity.normalized * GroundFriction;
-        }
+        if(!_hook.Info.IsHooking)
+            ApplyFriction();
 
-        Vector3 oldVelocity = controller.velocity;
-        if (controller.isGrounded)
-            oldVelocity.y = 0f;
+        CalculateNormalVelocity();
+        if (_hook.Info.IsHooking)
+            velocity += _hook.Info.HookAcceleration * Time.fixedDeltaTime;
 
-        velocity = oldVelocity + acceleration * Time.fixedDeltaTime;
-        velocity = Vector3.ClampMagnitude(new Vector3(velocity.x, 0f, velocity.z), maxSpeed) + velocity.y * Vector3.up;
-
-        if (input.sqrMagnitude < Mathf.Epsilon)
-        {
-            Vector3 projectedVelocityController = Vector3.ProjectOnPlane(controller.velocity, Vector3.up);
-            Vector3 projectedVelocity = Vector3.ProjectOnPlane(velocity, Vector3.up);
-
-            if (Vector3.Dot(projectedVelocity, projectedVelocityController) < 0f || velocity.sqrMagnitude < 1f)
-                velocity.Set(0f, velocity.y, 0f);
-        }
-
-        controller.Move(velocity * Time.fixedDeltaTime);
+        _controller.Move(velocity * Time.fixedDeltaTime);
     }
+
+    
 
     private void GetInput()
     {
-        float horizontalAxis = CrossPlatformInputManager.GetAxisRaw(playerButtons.horizontalAxisName);
-        float verticalAxis = CrossPlatformInputManager.GetAxisRaw(playerButtons.verticalAxisName);
+        float horizontalAxis = CrossPlatformInputManager.GetAxisRaw(_playerButtons.horizontalAxisName);
+        float verticalAxis = CrossPlatformInputManager.GetAxisRaw(_playerButtons.verticalAxisName);
         input.Set(horizontalAxis, verticalAxis);
 
-        pressedJump = CrossPlatformInputManager.GetButton(playerButtons.jumpButtonName);
+        pressedJump = CrossPlatformInputManager.GetButton(_playerButtons.jumpButtonName);
     }
 
     private void UpdateSpeed()
     {
-        if (CrossPlatformInputManager.GetButton(playerButtons.walkButtonName))
-            maxSpeed = maxWalkSpeed;
+        if (CrossPlatformInputManager.GetButton(_playerButtons.walkButtonName))
+            maxSpeed = _maxWalkSpeed;
         else
-            maxSpeed = maxRunSpeed;
+            maxSpeed = _maxRunSpeed;
 
-        currentAcceleration = moveAcceleration;
-        if (!controller.isGrounded)
-            currentAcceleration *= airMovementMultiplier;
+        currentAcceleration = _moveAcceleration;
+        if (!_controller.isGrounded)
+            currentAcceleration *= _airMovementMultiplier;
     }
 
     private void ApplyGravity()
     {
-        if (!controller.isGrounded)
+        if (!_controller.isGrounded)
         {
             Vector3 gravityVector = Physics.gravity;
             // we are currently going down = falling
-            if (Vector3.Dot(rigidBody.velocity, Physics.gravity) > 0)
-                acceleration += gravityVector * fallGravityMultiplier;
+            if (Vector3.Dot(_rigidBody.velocity, Physics.gravity) > 0)
+                acceleration += gravityVector * _fallGravityMultiplier;
             else
-                acceleration += gravityVector * jumpGravityMultiplier;
+                acceleration += gravityVector * _jumpGravityMultiplier;
         }
         else
-            acceleration.y += -stickToGroundForce;
+            acceleration.y += -_stickToGroundForce;
     }
 
     private void VerticalMovement()
     {
         // projects camera forward vector onto x and z plane       
-        Vector3 projectedForward = Vector3.ProjectOnPlane(playerCam.transform.forward, Vector3.up);
-        Vector3 verticalMovement = projectedForward * input.y + playerCam.transform.right * input.x;
+        Vector3 projectedForward = Vector3.ProjectOnPlane(_playerCam.transform.forward, Vector3.up);
+        Vector3 verticalMovement = projectedForward * input.y + _playerCam.transform.right * input.x;
         verticalMovement.Normalize();
 
         acceleration.x += verticalMovement.x * currentAcceleration;
@@ -164,7 +156,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Jump()
     {
-        if (controller.isGrounded)
+        if (_controller.isGrounded)
         {
             inAirTimer = 0f;
             performedJump = false;
@@ -175,13 +167,48 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // Can't jump if we've been falling too long or if we allready pressed jump
-        bool canJump = inAirTimer < timeForJump && !performedJump;
+        bool canJump = inAirTimer < _timeForJump && !performedJump;
         if (pressedJump && canJump)
         {
-            acceleration += Vector3.up * jumpStrength;
+            acceleration += Vector3.up * _jumpStrength;
 
             pressedJump = false;
             performedJump = true;
         }
+    }
+
+    private void ApplyFriction()
+    {
+        if (input.sqrMagnitude < Mathf.Epsilon && _controller.isGrounded)
+        {
+            Vector3 projectedVelocity = Vector3.ProjectOnPlane(_controller.velocity, Vector3.up);
+            acceleration -= projectedVelocity.normalized * GroundFriction;
+        }
+    }
+
+    /// <summary>
+    /// Calculates and adjusts velocity, like clamping on the movement plane or settings up/down velocity to zero, if grounded.
+    /// </summary>
+    private void CalculateNormalVelocity()
+    {
+        // if we are grounded, set the y velocity to 0, makes every jump jump to the same height
+        // otherwise there will be negative velocity that's left from earlier frames and quick jumps
+        // one after another will result in random jump heights
+        Vector3 oldVelocity = _controller.velocity;
+        if (_controller.isGrounded)
+            oldVelocity.y = 0f;
+
+        velocity = oldVelocity + acceleration * Time.fixedDeltaTime;
+        velocity = Vector3.ClampMagnitude(new Vector3(velocity.x, 0f, velocity.z), maxSpeed) + velocity.y * Vector3.up;
+
+        if (input.sqrMagnitude < Mathf.Epsilon)
+        {
+            Vector3 projectedVelocityController = Vector3.ProjectOnPlane(_controller.velocity, Vector3.up);
+            Vector3 projectedVelocity = Vector3.ProjectOnPlane(velocity, Vector3.up);
+
+            if (Vector3.Dot(projectedVelocity, projectedVelocityController) < 0f || velocity.sqrMagnitude < 1f)
+                velocity.Set(0f, velocity.y, 0f);
+        }
+
     }
 }

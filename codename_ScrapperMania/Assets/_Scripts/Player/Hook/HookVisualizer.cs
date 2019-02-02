@@ -5,14 +5,14 @@ using UnityEngine;
 public class HookVisualizer : MonoBehaviour
 {
     [SerializeField]
-    private float lineWidth = .25f;
+    private float _lineWidth = .25f;
     [SerializeField]
-    private LineRenderer lineRenderer = null;
+    private LineRenderer _lineRenderer = null;
 
     private void Start()
     {
-        lineRenderer.startWidth = lineWidth;
-        lineRenderer.endWidth = lineWidth;
+        _lineRenderer.startWidth = _lineWidth;
+        _lineRenderer.endWidth = _lineWidth;
     }
 
     public void ShowHookFail()
@@ -22,18 +22,18 @@ public class HookVisualizer : MonoBehaviour
 
     public void ShowHookStart()
     {
-        lineRenderer.enabled = true;
+        _lineRenderer.enabled = true;
     }
 
     public void ShowHookUpdate(Vector3 start, Vector3 end)
     {
-        lineRenderer.SetPositions(new [] { start, end });
+        _lineRenderer.SetPositions(new [] { start, end });
     }
 
     public void ShowHookEnd()
     {
         Debug.Log("End Hook.");
 
-        lineRenderer.enabled = false;
+        _lineRenderer.enabled = false;
     }
 }
