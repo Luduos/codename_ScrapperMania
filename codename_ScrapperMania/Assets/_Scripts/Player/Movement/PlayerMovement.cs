@@ -80,6 +80,10 @@ public class PlayerMovement : MonoBehaviour
         if (_hook.Hit.IsHooking)
             velocity += _hook.Hit.HookAcceleration * Time.fixedDeltaTime;
 
+        velocity.x = Mathf.Clamp(velocity.x, -_info.absoluteMaxVelocity.x, _info.absoluteMaxVelocity.x);
+        velocity.y = Mathf.Clamp(velocity.y, -_info.absoluteMaxVelocity.y, _info.absoluteMaxVelocity.y);
+        velocity.z = Mathf.Clamp(velocity.z, -_info.absoluteMaxVelocity.z, _info.absoluteMaxVelocity.z);
+
         _controller.Move(velocity * Time.fixedDeltaTime);
     }
 

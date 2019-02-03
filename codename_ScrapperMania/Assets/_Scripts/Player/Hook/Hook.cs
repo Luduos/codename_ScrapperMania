@@ -39,6 +39,7 @@ public class Hook : MonoBehaviour
         if (_hit.IsHooking)
         {
             _hit.Hit = hit;
+            _hit.ActualTarget = hit.point + hit.normal * _info.hookTargetOffset.y;
             _visualizer.ShowHookStart();
         }
         else
@@ -50,10 +51,9 @@ public class Hook : MonoBehaviour
 
     private void UpdateHook()
     {
-
         _hit.UseGravity = _info.useGravity;
 
-        Vector3 hookToHit = _hit.Hit.point - this.transform.position;
+        Vector3 hookToHit = _hit.ActualTarget - this.transform.position;
         _hit.Length = hookToHit.magnitude;
 
         float hookStrengthMultiplier = Mathf.Clamp(_hit.Length, 0f, _info.maxHookStrengthDistance);
@@ -65,7 +65,7 @@ public class Hook : MonoBehaviour
         {
             _hit.IsHooking = true;
             _hit.HookNormal = hookToHit.normalized;
-            _hit.HookAcceleration = _hit.HookNormal * hookStrengthMultiplier * _info.hookStrength;
+            _hit.HookAcceleration = _hit.HookNormal  * _info.hookStrength;
 
             _visualizer.ShowHookUpdate(this.transform.position, _hit.Hit.point);
         }
@@ -86,6 +86,7 @@ public class HookHit
     public bool IsHooking { get; set; }
     public bool UseGravity { get; set; }
     public float Length { get; set; }
+    public Vector3 ActualTarget { get; set; }
     public Vector3 HookNormal { get; set; }
     public Vector3 HookAcceleration { get; set; }
     public RaycastHit Hit { get; set; }

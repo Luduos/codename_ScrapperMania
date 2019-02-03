@@ -25,4 +25,7 @@ public class HookInfo : ScriptableObject
     [SerializeField]
     [Tooltip("Use gravity during the hook.")]
     public bool useGravity = false;
+
+    [SerializeField]
+    public Vector3 hookTargetOffset = new Vector3(0, 1, 0);
 }

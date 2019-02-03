@@ -19,6 +19,7 @@ MonoBehaviour:
   jumpStrength: 1250
   airMovementMultiplier: 0.2
   stickToGroundForce: 0
-  jumpGravityMultiplier: 6
-  fallGravityMultiplier: 4
-  timeForJump: 0.25
+  jumpGravityMultiplier: 4
+  fallGravityMultiplier: 2
+  timeForJump: 0.5
+  absoluteMaxVelocity: {x: 100, y: 50, z: 100}
