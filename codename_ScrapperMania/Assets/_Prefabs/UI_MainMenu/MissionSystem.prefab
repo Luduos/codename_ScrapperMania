@@ -495,7 +495,7 @@ GameObject:
   - component: {fileID: 5302278579855333110}
   - component: {fileID: 5302278579855333111}
   m_Layer: 0
-  m_Name: Text
+  m_Name: Description
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -693,7 +693,7 @@ GameObject:
   - component: {fileID: 5302278580163961120}
   - component: {fileID: 5302278580163961121}
   m_Layer: 0
-  m_Name: Button
+  m_Name: PlayButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -822,7 +822,7 @@ GameObject:
   - component: {fileID: 5302278580715931821}
   - component: {fileID: 5302278580715931810}
   m_Layer: 0
-  m_Name: Text
+  m_Name: ButtonText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1107,26 +1107,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 793792679285605424, guid: e5ef4f7e0542af74cad1cae2722ef930,
         type: 3}
-      propertyPath: missions.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 793792679285605424, guid: e5ef4f7e0542af74cad1cae2722ef930,
-        type: 3}
-      propertyPath: missions.Array.data[0]
+      propertyPath: missionController
       value: 
-      objectReference: {fileID: 11400000, guid: e876ced338916da4687f791b99cb728a,
-        type: 2}
-    - target: {fileID: 793792679285605424, guid: e5ef4f7e0542af74cad1cae2722ef930,
-        type: 3}
-      propertyPath: missions.Array.data[1]
-      value: 
-      objectReference: {fileID: 11400000, guid: f905381e56c184547ba7f19adfee5654,
-        type: 2}
-    - target: {fileID: 793792679285605424, guid: e5ef4f7e0542af74cad1cae2722ef930,
-        type: 3}
-      propertyPath: missions.Array.data[2]
-      value: 
-      objectReference: {fileID: 11400000, guid: 65945866ba92bec4eb60c51b34dc82ea,
+      objectReference: {fileID: 11400000, guid: 40acab6f3721e7b408f777d06a696104,
         type: 2}
     - target: {fileID: 793792679285605424, guid: e5ef4f7e0542af74cad1cae2722ef930,
         type: 3}
