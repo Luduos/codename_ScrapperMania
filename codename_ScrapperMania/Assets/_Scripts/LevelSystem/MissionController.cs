@@ -33,4 +33,9 @@ public class MissionController : SingletonScriptableObject<MissionController>
     {
         missions.Find(i => i.missionName == sceneName).Reset();
     }
+
+    public List<Mission> GetMissions()
+    {
+        return missions;
+    }
 }

@@ -5,12 +5,12 @@ using UnityEngine.UI;
 
 public class UIMission : MonoBehaviour
 {
-    public bool isHighlighted;
+    public bool isHighlighted = false;
 
-    [SerializeField] private Color normalTextColor;
-    [SerializeField] private Color highlightedTextColor;
-    [SerializeField] private Text missionNameText;
-    [SerializeField] private Image lockImage;
+    [SerializeField] private Color normalTextColor = Color.white;
+    [SerializeField] private Color highlightedTextColor = Color.black;
+    [SerializeField] private Text missionNameText = null;
+    [SerializeField] private Image lockImage = null;
     public Image LockImage { get { return lockImage; } }
 
     private Transform missionScoreParent;

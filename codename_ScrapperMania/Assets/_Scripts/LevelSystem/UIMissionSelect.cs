@@ -4,24 +4,30 @@ using System.Collections.Generic;
 
 public class UIMissionSelect : MonoBehaviour
 {
-    public Mission[] missions;
-    public Text missionDescription;
-    public Image missionImage;
-    public Button playButton;
+    [SerializeField]
+    private MissionController missionController = null;
+    [SerializeField]
+    private Text missionDescription = null;
+    [SerializeField]
+    private Image missionImage = null;
+    [SerializeField]
+    private Button playButton = null;
 
     [SerializeField]
-    private UIMission missionUI;
+    private UIMission missionUI = null;
     [SerializeField]
-    private MissionPopup missionPopup;
+    private MissionPopup missionPopup = null;
 
-    private UIMission lastSelected;
-    private Transform missionPanel;
+    private UIMission lastSelected = null;
+    private Transform missionPanel = null;
     private List<UIMission> missionList = new List<UIMission>();
+    private List<Mission> missions = new List<Mission>();
 
-    private void Start()
+    private void Awake()
     {
+        missions = missionController.GetMissions();
         missionPanel = transform;
-        for (int i = 0; i < missions.Length; i++)
+        for (int i = 0; i < missions.Count; i++)
         {
             missionList.Add(missionUI);
         }
@@ -36,7 +42,7 @@ public class UIMissionSelect : MonoBehaviour
 
     private void BuildMissionPanel()
     {
-        for (int i = 0; i < missions.Length; i++)
+        for (int i = 0; i < missions.Count; i++)
         {
             Mission mission = missions[i];
             UIMission instance = Instantiate(missionList[i]);
