@@ -16,4 +16,4 @@ MonoBehaviour:
   maxHookStrengthDistance: 5
   maxRange: 40
   hookStrength: 20
-  useGravity: 1
+  useGravity: 0
