@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9badf0df992fe594ba6c62686c78fb3a, type: 3}
   m_Name: Standard Hook Info
   m_EditorClassIdentifier: 
-  minDistance: 2
+  minDistance: 0
   maxHookStrengthDistance: 20
   maxRange: 50
   hookStrength: 200

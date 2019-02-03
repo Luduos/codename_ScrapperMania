@@ -24,7 +24,7 @@ public class Hook : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (!_hit.IsHooking && Input.GetButtonDown(_playerButtons.hookButton))
+        if (!_hit.IsHooking && Input.GetButton(_playerButtons.hookButton))
             StartHook();
         if (_hit.IsHooking && Input.GetButton(_playerButtons.hookButton))
             UpdateHook();
