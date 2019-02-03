@@ -34,4 +34,6 @@ public class PlayerMovementInfo : ScriptableObject
     [SerializeField]
     [Tooltip("Seconds after falling during which we can still jump.")]
     public float timeForJump = 0.25f;
+    [SerializeField]
+    public Vector3 absoluteMaxVelocity = new Vector3(100, 100, 100);
 }
