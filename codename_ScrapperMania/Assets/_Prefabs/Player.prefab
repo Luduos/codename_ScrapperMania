@@ -44,10 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5c171be627bbaf4cb34b21112de5c63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _minDistance: 0
-  _maxHookStrengthDistance: 10
-  _maxRange: 50
-  _hookStrength: 20
+  _info: {fileID: 11400000, guid: d90ebc66de3044d418d6d55bc6194e03, type: 2}
   _playerCamera: {fileID: 8800252042212535055}
   _visualizer: {fileID: 7574926809174083072}
   _playerButtons: {fileID: 11400000, guid: 4f3975fde6fe86345a17de77acfdc2bb, type: 2}

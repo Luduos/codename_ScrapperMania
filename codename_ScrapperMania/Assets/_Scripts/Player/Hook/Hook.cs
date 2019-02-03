@@ -28,7 +28,7 @@ public class Hook : MonoBehaviour
             StartHook();
         if (_hit.IsHooking && Input.GetButton(_playerButtons.hookButton))
             UpdateHook();
-        if (_hit.IsHooking && Input.GetButtonUp(_playerButtons.hookButton))
+        if (_hit.IsHooking && !Input.GetButton(_playerButtons.hookButton))
             StopHook();       
     }
 
@@ -50,6 +50,7 @@ public class Hook : MonoBehaviour
 
     private void UpdateHook()
     {
+
         _hit.UseGravity = _info.useGravity;
 
         Vector3 hookToHit = _hit.Hit.point - this.transform.position;
@@ -62,6 +63,7 @@ public class Hook : MonoBehaviour
         }
         else
         {
+            _hit.IsHooking = true;
             _hit.HookNormal = hookToHit.normalized;
             _hit.HookAcceleration = _hit.HookNormal * hookStrengthMultiplier * _info.hookStrength;
 
